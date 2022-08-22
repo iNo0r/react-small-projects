@@ -33,15 +33,21 @@ const Tut5 = () => {
           All
         </button>
         <button
-          onClick={() => dispatch({ type: "all" })}
+          onClick={() => dispatch({ type: "breakfast" })}
           className=" text-yellow-500 px-4 py-2 hover:bg-yellow-500 hover:text-white rounded transition-all duration-300"
         >
           Breakfast
         </button>
-        <button className=" text-yellow-500 px-4 py-2 hover:bg-yellow-500 hover:text-white rounded transition-all duration-300">
+        <button
+          onClick={() => dispatch({ type: "lunch" })}
+          className=" text-yellow-500 px-4 py-2 hover:bg-yellow-500 hover:text-white rounded transition-all duration-300"
+        >
           Lunch
         </button>
-        <button className=" text-yellow-500 px-4 py-2 hover:bg-yellow-500 hover:text-white rounded transition-all duration-300">
+        <button
+          onClick={() => dispatch({ type: "shakes" })}
+          className=" text-yellow-500 px-4 py-2 hover:bg-yellow-500 hover:text-white rounded transition-all duration-300"
+        >
           Shakes
         </button>
       </div>

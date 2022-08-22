@@ -2,7 +2,7 @@ const ManuItem = ({ item }) => {
   return (
     <article className="pn-list-item flex flex-col gap-y-4 md:gap-x-4 md:flex-row max-w-[400px] md:max-w-xl xl:w-1/2  ">
       <div
-        className="  h-[12.5rem] bg-yellow-200 bg-clip-padding bg-cover p-[10px] border-[4px] border-yellow-500 md:w-1/3 md:min-w-[225px]"
+        className="  h-[12.5rem] bg-yellow-200 bg-clip-padding bg-cover p-[10px] border-[4px] border-yellow-500 md:w-1/3 md:min-w-[225px] bg-center"
         style={{ backgroundImage: `url(${item.img})` }}
       ></div>
       <div className="pn-details flex flex-col gap-y-3">
