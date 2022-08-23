@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { FaAngleDoubleRight } from "react-icons/fa";
+import { useEffect, useMemo, useState } from "react";
 import _ from "lodash";
 import CompanyBtn from "./companyButton";
 import CompanyDetails from "./companyDetails";
@@ -31,8 +30,10 @@ const App6 = () => {
   }, [selectedCompanyName, usersData]);
 
   useEffect(() => {
+    setLoading(true);
     fetchData("", setUsersData, URL).then(() => {
       setReady(true);
+      setLoading(false);
     });
   }, []);
 
@@ -48,6 +49,7 @@ const App6 = () => {
             <div className="pn-btns-container  flex gap-x-7 lg:flex-col lg:self-start lg:gap-y-4 lg:items-start lg:w-2/12 ">
               {companis.map((companyName) => (
                 <CompanyBtn
+                  selectedCompanyName={selectedCompanyName}
                   toggleCompany={toggleCompany}
                   companyName={companyName}
                   key={companyName}
