@@ -11,16 +11,16 @@ const App6 = () => {
   const [usersData, setUsersData] = useState([]);
   const [selectedCompanyName, setSelectedCompanyName] = useState("");
 
+  const toggleCompany = (companyName) => {
+    setSelectedCompanyName(companyName);
+  };
+
   // to produce a computed list of companies
   const companis = useMemo(() => {
     if (_.isEmpty(usersData)) return;
 
     return [...new Set(usersData.map((item) => item.company))];
   }, [usersData]);
-
-  const toggleCompany = (companyName) => {
-    setSelectedCompanyName(companyName);
-  };
 
   // to produce a reactive selected company object
   const selectedCompany = useMemo(() => {
@@ -37,7 +37,13 @@ const App6 = () => {
     });
   }, []);
 
-  isLoading && <div> Loading </div>;
+  if (isLoading)
+    return (
+      <div className=" h-screen w-screen flex justify-center items-center text-4xl text-blue-400">
+        {" "}
+        Loading{" "}
+      </div>
+    );
   return (
     isReady && (
       <div className="h-screen w-screen bg-slate-100 py-[80px] ">
