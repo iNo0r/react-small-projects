@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import _ from "lodash";
 import CompanyBtn from "./companyButton";
 import CompanyDetails from "./companyDetails";
+import { fetchData } from "./actions";
 
 const URL = "https://course-api.com/react-tabs-project";
 const App6 = () => {
@@ -11,17 +12,16 @@ const App6 = () => {
   const [usersData, setUsersData] = useState([]);
   const [selectedCompanyName, setSelectedCompanyName] = useState("");
 
-  const fetchData = async (data, setter, url) => {
-    const response = await fetch(url);
-    const newData = await response.json();
-    setter(newData);
-  };
-
   // to produce a computed list of companies
   const companis = useMemo(() => {
     if (_.isEmpty(usersData)) return;
+
     return [...new Set(usersData.map((item) => item.company))];
   }, [usersData]);
+
+  const toggleCompany = (companyName) => {
+    setSelectedCompanyName(companyName);
+  };
 
   // to produce a reactive selected company object
   const selectedCompany = useMemo(() => {
@@ -32,7 +32,6 @@ const App6 = () => {
 
   useEffect(() => {
     fetchData("", setUsersData, URL).then(() => {
-      console.log("isReady");
       setReady(true);
     });
   }, []);
@@ -48,7 +47,11 @@ const App6 = () => {
           <div className="pn-content-c flex flex-col items-center lg:flex-row lg:justify-between">
             <div className="pn-btns-container  flex gap-x-7 lg:flex-col lg:self-start lg:gap-y-4 lg:items-start lg:w-2/12 ">
               {companis.map((companyName) => (
-                <CompanyBtn companyName={companyName} key={companyName} />
+                <CompanyBtn
+                  toggleCompany={toggleCompany}
+                  companyName={companyName}
+                  key={companyName}
+                />
               ))}
             </div>
             <div className="pn-articles-list lg:w-10/12 ">
