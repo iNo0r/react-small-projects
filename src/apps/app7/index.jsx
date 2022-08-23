@@ -1,24 +1,61 @@
-import { useEffect, useMemo, useState } from "react";
+// this carousel is ready to use
+// How does it work?
+// when clicking next or prvious, thre items will be ready to move, one in the middle and two on the side which are hidden using overflow-hidden, the same time a the button clicked a set time-out function will will be trigged after the duration of animation, in that funciton the array will of displayed will be reformed and the animation will be cancled
 
+import { useEffect, useMemo, useState } from "react";
+import listData from "./data";
 const App7 = () => {
   const [moveForward, setMoveForward] = useState(false);
   const [moveBackward, setMoveBackward] = useState(false);
-  const [mainList, setMainList] = useState([
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-  ]);
+
+  //   const [mainList, setMainList] = useState([
+  //     "one",
+  //     "two",
+  //     "three",
+  //     "four",
+  //     "five",
+  //     "six",
+  //   ]);
+  const mainList = listData;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  // this method is used to handle incrase the index number when moving forward and backward to insure it does not go below 0 or above the array length
+  function updateSelectedIndex(movement) {
+    console.log(movement);
+    if (movement === "forward") {
+      if (selectedIndex >= mainList.length - 1) return setSelectedIndex(0);
+      return setSelectedIndex((prev) => prev + 1);
+    }
+    if (movement === "backward") {
+      if (selectedIndex <= 0) return setSelectedIndex(mainList.length - 1);
+      return setSelectedIndex((prev) => prev - 1);
+    }
+  }
+
+  const handleMoveForward = () => {
+    // when this is true the animation starts, and animation will be allowed
+    setMoveForward(true);
+    setTimeout(() => {
+      // this will cancle the animation
+      setMoveForward(false);
+      //   this will increase the index, and carouselList is watching this value to reform the
+      updateSelectedIndex("forward");
+    }, 100);
+  };
+
+  const handleMoveBackward = () => {
+    setMoveBackward(true);
+    setTimeout(() => {
+      setMoveBackward(false);
+      updateSelectedIndex("backward");
+    }, 100);
+  };
+
+  // this will generete a new array based on the mainList  (from the original array) of three items, for display
   const carouselList = useMemo(() => {
     let listLength = mainList.length;
     let lastItem = mainList[listLength - 1];
     let firstItem = mainList[0];
-    // if(selectedIndex <)
-
     let currentSlide = mainList[selectedIndex];
     let previousSlide =
       selectedIndex === 0 ? lastItem : mainList[selectedIndex - 1];
@@ -29,73 +66,23 @@ const App7 = () => {
 
     return [previousSlide, currentSlide, nextSlide];
   }, [selectedIndex]);
-
-  const [items, setItems] = useState(["one", "two", "three"]);
-
-  // this method is used to handle incrase the index number when moving forward and backward to insure it does not go below 0 or above the array length
-  function updateSelectedIndex(movement) {
-    if ((movement = "forward")) {
-      if (selectedIndex >= mainList.length - 1) return setSelectedIndex(0);
-      return setSelectedIndex((prev) => prev + 1);
-    }
-    if ((movement = "backward")) {
-      if (selectedIndex <= 0) return setSelectedIndex(mainList.length - 1);
-      return setSelectedIndex((prev) => prev - 1);
-    }
-  }
-
-  const handleMoveForward = () => {
-    function reformItems() {
-      setItems((prev) => {
-        let someArr = [...prev];
-        const firstItem = someArr.shift();
-        someArr.push(firstItem);
-        return someArr;
-      });
-    }
-    setMoveForward(true);
-    updateSelectedIndex("forward");
-    setTimeout(() => {
-      setMoveForward(false);
-      reformItems();
-    }, 500);
-  };
-
-  const handleMoveBackward = () => {
-    function reformItems() {
-      setItems((prev) => {
-        let someArr = [...prev];
-        const lastItem = someArr.pop();
-        someArr.unshift(lastItem);
-        return someArr;
-      });
-    }
-    setMoveBackward(true);
-    updateSelectedIndex("backward");
-    setTimeout(() => {
-      setMoveBackward(false);
-      reformItems();
-    }, 500);
-  };
   console.log(selectedIndex);
   console.log(carouselList);
-  useEffect(() => {}, [selectedIndex]);
 
   return (
     <div className="pn-app-container h-screen w-screen bg-slate-50 flex flex-col justify-center items-center ">
       <h1 className=" capitalize text-gray-700 text-4xl h-fit ">
         <span className=" text-red-400">/</span> <span>reviews</span>
       </h1>
-      {/* <div className="pn-carousel h-28 w-28 bg-slate-300 relative overflow-hidden"> */}
-      <div className="pn-carousel h-28 w-28 bg-slate-300 relative ">
+      <div className="pn-carousel h-28 w-28 bg-slate-300 relative overflow-hidden">
         <article
-          className={`h-full w-full bg-green-200 top-0 left-[-100%]   absolute 
+          className={`h-full w-full bg-yellow-200 top-0 left-[-100%]   absolute
           ${moveForward && "-translate-x-[100%]"} 
           ${moveForward && "transition-all"}
           ${moveBackward && "translate-x-[100%]"} 
           ${moveBackward && "transition-all"}`}
         >
-          {items[0]}
+          {carouselList[0].title}
         </article>
         <article
           className={`h-full w-full bg-yellow-200 absolute    
@@ -104,17 +91,17 @@ const App7 = () => {
           ${moveBackward && "translate-x-[100%]"} 
           ${moveBackward && "transition-all"}`}
         >
-          {items[1]}
+          {carouselList[1].title}
         </article>
         <article
-          className={`h-full w-full bg-red-200 top-0 right-[-100%]  absolute 
+          className={`h-full w-full bg-yellow-200 top-0 right-[-100%]  absolute 
           ${moveForward && "-translate-x-[100%]"} 
           ${moveForward && "transition-all"}
           ${moveBackward && "translate-x-[100%]"} 
           ${moveBackward && "transition-all"}
            `}
         >
-          {items[2]}
+          {carouselList[2].title}
         </article>
       </div>
       <button onClick={handleMoveBackward}>move backward</button>
