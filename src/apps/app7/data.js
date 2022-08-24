@@ -1,3 +1,4 @@
+// dull data
 const people = [
   {
     id: 1,
